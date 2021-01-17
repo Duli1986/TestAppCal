@@ -3,10 +3,8 @@ import moment from 'moment'
 import axios from '../axios-bookings';
 
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-
-import DayPicker from '../components/Dates/DayPicker';
 import Scheduler from '../components/Schedule/Scheduler';
+import withDragDropContext from "../components/Schedule/withDnDContext";
 
 const styles = theme => ({
     root: {
@@ -43,10 +41,9 @@ class RoomAvailability extends Component {
 
     render() {
         const { classes } = this.props;
-        // console.log(this.state.date);
 
         return (
-            <div className={classes.root}>
+            <div>
                 {/* <Grid container={40} justify="center" alignItems="flex-start">
                     {/* <Grid item xs={3} direction="column">
                         <Grid item className={classes.padding}>
@@ -76,4 +73,5 @@ class RoomAvailability extends Component {
     }
 }
 
-export default withStyles(styles)(RoomAvailability);
+// export default withStyles(styles)(RoomAvailability);
+export default withDragDropContext(RoomAvailability);

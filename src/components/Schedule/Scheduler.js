@@ -11,6 +11,7 @@ import moment from "moment";
 
 import axios from "../../axios-bookings";
 import BookingDialog from "./BookingDialog";
+import DemoData from "../Data/DemoData";
 
 const schedulerData = new SchedulerData(
     new moment().format(DATE_FORMAT),
@@ -25,6 +26,8 @@ const schedulerData = new SchedulerData(
 );
 schedulerData.localeMoment.locale("en");
 schedulerData.setMinuteStep(30);
+schedulerData.setResources(DemoData.resources);
+schedulerData.setEvents(DemoData.events);
 
 class CalendarScheduler extends Component {
     state = {
@@ -47,7 +50,9 @@ class CalendarScheduler extends Component {
         const { viewModel } = this.state;
 
         let schedulerData = this.state.viewModel;
-        schedulerData.setResources(this.props.rooms);
+        schedulerData.setMinuteStep(30);
+        schedulerData.setResources(DemoData.resources);
+        schedulerData.setEvents(DemoData.events);
 
         return (
             <div>
@@ -69,40 +74,40 @@ class CalendarScheduler extends Component {
         this.setState({
             showBookingDialog: true
         });
-        // if (window.confirm(`Do you want to create a new event? {slotId: ${slotId}, slotName: ${slotName}, start: ${start}, end: ${end}, type: ${type}, item: ${item}}`)) {
-        //     let newFreshId = 0;
-        //     schedulerData.events.forEach((item) => {
-        //         if (item.id >= newFreshId)
-        //             newFreshId = item.id + 1;
-        //     });
-        //     let newEvent = {
-        //         id: newFreshId,
-        //         title: 'New event you just created',
-        //         start: start,
-        //         end: end,
-        //         resourceId: slotId,
-        //         bgColor: 'purple'
-        //     }
-        //     schedulerData.addEvent(newEvent);
-        //     this.setState({
-        //         viewModel: schedulerData
-        //     })
-        //     const booking = {
-        //         id: newFreshId,
-        //         title: 'New event you just created',
-        //         start: start,
-        //         end: end,
-        //         resourceId: slotId,
-        //         customer: {
-        //             name: 'Joey',
-        //             ic: 'S12345678C',
-        //             mobile: '98765432',
-        //         }
-        //     }
-        //     axios.post('/bookings.json', booking)
-        //         .then(response => console.log(response))
-        //         .catch(error => console.log("hello"));
-        // }
+         if (window.confirm(`Do you want to create a new event? {slotId: ${slotId}, slotName: ${slotName}, start: ${start}, end: ${end}, type: ${type}, item: ${item}}`)) {
+             let newFreshId = 0;
+             schedulerData.events.forEach((item) => {
+                 if (item.id >= newFreshId)
+                     newFreshId = item.id + 1;
+             });
+             let newEvent = {
+                 id: newFreshId,
+                 title: 'New event you just created',
+                 start: start,
+                 end: end,
+                 resourceId: slotId,
+                 bgColor: 'purple'
+             }
+             schedulerData.addEvent(newEvent);
+             this.setState({
+                 viewModel: schedulerData
+             })
+             const booking = {
+                 id: newFreshId,
+                 title: 'New event you just created',
+                 start: start,
+                 end: end,
+                 resourceId: slotId,
+                 customer: {
+                     name: 'Joey',
+                     ic: 'S12345678C',
+                     mobile: '98765432',
+                 }
+             }
+             axios.post('/bookings.json', booking)
+                 .then(response => console.log(response))
+                 .catch(error => console.log("hello"));
+         }
     };
 
     prevClick = schedulerData => {
